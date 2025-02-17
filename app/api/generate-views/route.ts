@@ -108,7 +108,7 @@ Source Text: ${text}`
         title: view.title || `Alternative Perspective ${index + 1}`,
         content: view.content || 'A unique perspective on the topic.',
         imageGenerationPrompt: view.imageGenerationPrompt || `Symbolic representation ${index + 1}`,
-        imageUrl: `https://picsum.photos/seed/${index + 1}/400/300`
+        imageUrl: `https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExaHdsYnY1aHJnanNyNndia2dyMGlqZnkzczBqazliM2ZzMmU0enp3aSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/l0NwIupiUA7Yeffl6/giphy.gif`
       }))
     );
 

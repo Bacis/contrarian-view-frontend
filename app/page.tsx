@@ -3,46 +3,6 @@
 import Image from "next/image";
 import { useState } from "react";
 
-// Mock contrarian views for search results
-// const mockContrarianViews = [
-//   { 
-//     id: 1, 
-//     title: "Climate Change: A Contrarian View", 
-//     content: "Challenging mainstream narratives about global warming and its potential impacts.",
-//     imageUrl: "https://picsum.photos/seed/1/800/600"
-//   },
-//   { 
-//     id: 2, 
-//     title: "AI Development: Risks and Misconceptions", 
-//     content: "Exploring alternative perspectives on the potential dangers and benefits of artificial intelligence.",
-//     imageUrl: "https://picsum.photos/seed/2/800/600"
-//   },
-//   { 
-//     id: 3, 
-//     title: "Economic Inequality: Rethinking Solutions", 
-//     content: "A critical examination of conventional approaches to addressing wealth disparities.",
-//     imageUrl: "https://picsum.photos/seed/3/800/600"
-//   },
-//   { 
-//     id: 4, 
-//     title: "Renewable Energy: Hidden Challenges", 
-//     content: "Uncovering overlooked obstacles in the transition to sustainable energy sources.",
-//     imageUrl: "https://picsum.photos/seed/4/800/600"
-//   },
-//   { 
-//     id: 5, 
-//     title: "Social Media's Impact: Beyond the Narrative", 
-//     content: "An alternative analysis of how digital platforms shape social interactions and perceptions.",
-//     imageUrl: "https://picsum.photos/seed/5/800/600"
-//   },
-//   { 
-//     id: 6, 
-//     title: "Healthcare Innovation: Unconventional Insights", 
-//     content: "Challenging traditional thinking about medical progress and patient care.",
-//     imageUrl: "https://picsum.photos/seed/6/800/600"
-//   }
-// ];
-
 export default function Home() {
   const [query, setQuery] = useState("");
   const [result, setResult] = useState<{ id: number; title: string; content: string; imageUrl?: string }[]>([]);
@@ -133,6 +93,41 @@ export default function Home() {
 
       // Update the result state with generated views
       setResult(views);
+
+      console.log("Generated Views:", views);
+
+      // Update the result state with AI generated images
+      const updatedViews = await Promise.all(
+        views.map(async (view: { imageGenerationPrompt: string, id: number, title: string, content: string, imageUrl?: string }) => {
+          try {
+            const imageResponse = await fetch('/api/generate-image', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({ prompt: view.imageGenerationPrompt })
+            });
+
+            if (!imageResponse.ok) {
+              throw new Error('Failed to generate image');
+            }
+
+            const { imageUrl } = await imageResponse.json();
+
+            return {
+              ...view, 
+              imageUrl: imageUrl
+            };
+          } catch (error) {
+            console.error('Image Generation Error:', error);
+            return view;
+          }
+        })
+      );
+
+      if (updatedViews.length > 0) {
+        setResult(updatedViews);
+      }
     } catch (error) {
       setResult([]);
       const errorMessage = error instanceof Error 
