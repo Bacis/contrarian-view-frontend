@@ -94,40 +94,40 @@ export default function Home() {
       // Update the result state with generated views
       setResult(views);
 
-      // console.log("Generated Views:", views);
+      console.log("Generated Views:", views);
 
-      // // Update the result state with AI generated images
-      // const updatedViews = await Promise.all(
-      //   views.map(async (view: { imageGenerationPrompt: string, id: number, title: string, content: string, imageUrl?: string }) => {
-      //     try {
-      //       const imageResponse = await fetch('/api/generate-image', {
-      //         method: 'POST',
-      //         headers: {
-      //           'Content-Type': 'application/json',
-      //         },
-      //         body: JSON.stringify({ prompt: view.imageGenerationPrompt })
-      //       });
+      // Update the result state with AI generated images
+      const updatedViews = await Promise.all(
+        views.map(async (view: { imageGenerationPrompt: string, id: number, title: string, content: string, imageUrl?: string }) => {
+          try {
+            const imageResponse = await fetch('/api/runware-image', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({ prompt: view.imageGenerationPrompt })
+            });
 
-      //       if (!imageResponse.ok) {
-      //         throw new Error('Failed to generate image');
-      //       }
+            if (!imageResponse.ok) {
+              throw new Error('Failed to generate image');
+            }
 
-      //       const { imageUrl } = await imageResponse.json();
+            const { imageUrl } = await imageResponse.json();
 
-      //       return {
-      //         ...view, 
-      //         imageUrl: imageUrl
-      //       };
-      //     } catch (error) {
-      //       console.error('Image Generation Error:', error);
-      //       return view;
-      //     }
-      //   })
-      // );
+            return {
+              ...view, 
+              imageUrl: imageUrl
+            };
+          } catch (error) {
+            console.error('Image Generation Error:', error);
+            return view;
+          }
+        })
+      );
 
-      // if (updatedViews.length > 0) {
-      //   setResult(updatedViews);
-      // }
+      if (updatedViews.length > 0) {
+        setResult(updatedViews);
+      }
     } catch (error) {
       setResult([]);
       const errorMessage = error instanceof Error 
