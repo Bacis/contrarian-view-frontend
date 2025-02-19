@@ -1,10 +1,9 @@
-import OpenAI from 'openai';
+import Anthropic from '@anthropic-ai/sdk';
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENROUTER_API_KEY,
-  baseURL: 'https://openrouter.ai/api/v1'
+const anthropic = new Anthropic({
+  apiKey: process.env.ANTHROPIC_API_KEY,
 });
 
 // Define a Zod schema for validating the view structure
@@ -27,13 +26,11 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Text is required' }, { status: 400 });
     }
 
-    const response = await openai.chat.completions.create({
-      model: 'anthropic/claude-3-sonnet',
+    const response = await anthropic.messages.create({
+      model: "claude-3-sonnet-20240229",
+      max_tokens: 800,
+      temperature: 0.7,
       messages: [
-        {
-          role: 'system',
-          content: `You are an expert at generating profound, intellectually rigorous alternative interpretations of complex narratives.`
-        },
         {
           role: 'user',
           content: `Generate three radically different but plausible interpretations of this news story. Each interpretation should reveal a profound 'other way of looking at it' that causes an 'ah-ha!' moment by seeing the same events from a completely unexpected perspective. These should not be conspiracy theories, but rather intelligent alternative frameworks that expose deeper implications, hidden dynamics, or non-obvious future impacts. 
@@ -62,13 +59,13 @@ Example format:
 
 Source Text: ${text}`
         }
-      ],
-      max_tokens: 800,
-      temperature: 0.7,
-      response_format: { type: 'json_object' }
+      ]
     });
 
-    const rawContent = response.choices[0].message.content || '';
+    const rawContent = response.content
+      .filter((block) => block.type === 'text')
+      .map((block) => block.type === 'text' ? block.text : '')
+      .join('') || JSON.stringify(response.content);
 
     // Advanced JSON extraction and parsing
     const extractJSON = (content: string) => {

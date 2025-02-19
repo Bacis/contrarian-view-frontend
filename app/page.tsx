@@ -156,6 +156,11 @@ export default function Home() {
               type="text" 
               value={query}
               onChange={(e) => setQuery(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  handleSubmit();
+                }
+              }}
               placeholder="Enter URL" 
               className="flex-grow px-4 py-2 border border-black/[.08] dark:border-white/[.145] rounded-full focus:outline-none focus:ring-2 focus:ring-foreground text-sm sm:text-base placeholder:text-gray-500 dark:placeholder:text-gray-400 text-black"
             />
