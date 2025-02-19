@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 export async function POST(request: NextRequest) {
     try {
         // Parse the incoming request body
-        const { prompt, width = 1024, height = 704, model = "civitai:102438@133677", numberResults = 1 } = await request.json();
+        const { prompt, width = 1024, height = 704, model = "runware:100@1", numberResults = 1 } = await request.json();
 
         // Validate prompt
         if (!prompt || typeof prompt !== 'string') {
