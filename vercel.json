@@ -1,0 +1,8 @@
+{
+    "functions": {
+      "app/api/generate-views/route.ts": {
+        "maxDuration": 15
+      }
+    }
+  }
+  
