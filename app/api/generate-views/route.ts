@@ -33,9 +33,7 @@ export async function POST(request: NextRequest) {
       messages: [
         {
           role: 'user',
-          content: `Generate three radically different but plausible interpretations of this news story. Each interpretation should reveal a profound 'other way of looking at it' that causes an 'ah-ha!' moment by seeing the same events from a completely unexpected perspective. These should not be conspiracy theories, but rather intelligent alternative frameworks that expose deeper implications, hidden dynamics, or non-obvious future impacts. 
-
-Each interpretation should be 2-3 sentences long, be both surprising and logically sound, and reveal a perspective that makes us say 'wow, I hadn't thought of it that way!' Focus on identifying the profound historical implications or future consequences that aren't immediately apparent from the conventional narrative. Make each interpretation genuinely insightful rather than merely contrarian.
+          content: `Generate three radically different but plausible interpretations of this news story. Each interpretation should reveal a profound 'other way of looking at it' that causes an 'ah-ha!' moment by seeing the same events from a completely unexpected perspective. These should not be conspiracy theories, but rather intelligent alternative frameworks that expose deeper implications, hidden dynamics, or non-obvious future impacts. Each interpretation should be 2-3 sentences long, be both surprising and logically sound, and reveal a perspective that makes us say 'wow, I hadn't thought of it that way!' Focus on identifying the profound historical implications or future consequences that aren't immediately apparent from the conventional narrative. Make each interpretation genuinely insightful rather than merely contrarian. Write the way one person would speak to and communicate another, to communicate the idea so that the reader “really gets it” and not in an abstract academic style. Be simple to communicate the idea, while still being sophisticated.
 
 Respond with a VALID JSON array of view objects. Each view MUST have:
 - id (unique number)
